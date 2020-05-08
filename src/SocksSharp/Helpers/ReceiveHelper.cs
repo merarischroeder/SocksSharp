@@ -68,7 +68,7 @@ namespace SocksSharp.Helpers
 
         public void Init(Stream stream)
         {
-            this.stream = stream;
+            this.stream = Stream.Synchronized(stream);
             linePosition = 0;
 
             Length = 0;
