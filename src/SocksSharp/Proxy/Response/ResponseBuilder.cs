@@ -339,7 +339,7 @@ namespace SocksSharp.Proxy.Response
                         values = new List<string>();
                         values.Add(headerValue);
 
-                        contentHeaders.Add(headerName, values);
+                        contentHeaders.Add(headerName.ToLower(), values);
                     }
                 }
                 else
@@ -385,7 +385,7 @@ namespace SocksSharp.Proxy.Response
                 response.Content = new StreamContent(memoryStream);
                 foreach (var pair in contentHeaders)
                 {
-                    response.Content.Headers.TryAddWithoutValidation(pair.Key, pair.Value);
+                    response.Content.Headers.TryAddWithoutValidation(pair.Key.ToLower(), pair.Value);
                 }
             }
         }
@@ -471,7 +471,7 @@ namespace SocksSharp.Proxy.Response
 
         private IEnumerable<BytesWraper> GetMessageBodySource()
         {
-            if (contentHeaders.ContainsKey("Content-Encoding"))
+            if (contentHeaders.ContainsKey("content-encoding"))
             {
                 return GetMessageBodySourceZip();
             }
@@ -517,7 +517,7 @@ namespace SocksSharp.Proxy.Response
             List<string> values;
             int length;
 
-            if (contentHeaders.TryGetValue("Content-Length", out values))
+            if (contentHeaders.TryGetValue("content-length", out values))
             {
                 if (Int32.TryParse(values[0], out length))
                 {
@@ -533,7 +533,7 @@ namespace SocksSharp.Proxy.Response
             List<string> values;
             string encoding = "";
 
-            if (contentHeaders.TryGetValue("Content-Encoding", out values))
+            if (contentHeaders.TryGetValue("content-encoding", out values))
             {
                 encoding = values[0];
             }
